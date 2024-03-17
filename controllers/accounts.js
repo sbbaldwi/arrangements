@@ -4,7 +4,7 @@ const { ObjectId } = require('mongodb');
 const getAll = async (req, res) => {
     try {
         const db = getDb();
-        const collection = db.collection('accounts');
+        const collection = db.collection('account');
         const accounts = await collection.find({}, { projection: { password: 0 } }).toArray();
         res.status(200).json(accounts);
     } catch (err) {
@@ -16,7 +16,7 @@ const getAll = async (req, res) => {
 const getSingle = async (req, res) => {
     try {
         const db = getDb();
-        const collection = db.collection('accounts');
+        const collection = db.collection('account');
         const account = await collection.findOne({ _id: new ObjectId(req.params.id) }, { projection: { password: 0 } });
         if (!account) {
             return res.status(404).json({ message: 'Account not found' });
@@ -39,7 +39,7 @@ const createAccount = async (req, res) => {
 
         const account = { firstName, lastName, email, phoneNumber, password, birthday, fav_color };
         const db = getDb();
-        const collection = db.collection('accounts');
+        const collection = db.collection('account');
         const result = await collection.insertOne(account);
 
         res.status(201).json({ id: result.insertedId });
@@ -58,7 +58,7 @@ const updateAccount = async (req, res) => {
         }
 
         const db = getDb();
-        const collection = db.collection('accounts');
+        const collection = db.collection('account');
 
         const result = await collection.updateOne(
             { _id: new ObjectId(accountId) },
@@ -79,7 +79,7 @@ const deleteAccount = async (req, res) => {
     try {
         const accountId = req.params.id;
         const db = getDb();
-        const collection = db.collection('accounts');
+        const collection = db.collection('account');
 
         const result = await collection.deleteOne({ _id: new ObjectId(accountId) });
 
