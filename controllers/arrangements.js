@@ -58,7 +58,7 @@ exports.createArrangement = async (req, res) => {
 
         const formattedPrice = `$${priceVal.toFixed(2)}`;
 
-        const userID = req.user._id; 
+        const userID = req.user._id;
 
         // Database operation
         const db = getDb();
@@ -81,4 +81,9 @@ exports.createArrangement = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: "Error creating arrangement", error: err.message });
     }
+};
+
+module.exports = {
+    uploadArrangement,
+    createArrangement
 };
