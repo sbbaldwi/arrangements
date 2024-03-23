@@ -179,6 +179,104 @@
           }
         }
       }
+    },
+    "/arrangements/": {
+      "post": {
+        "description": "Allows users to upload a new music arrangement for sale, including a mandatory PDF document and an optional MP3 recording.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "example": "Hunger Games Medley"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "example": "Bri Christiansen"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "example": "This arrangement includes Everybody Wants to Rule the World, Yellow Flicker Beat, and the Hanging Tree from the Hunger Games movie series. "
+          },
+          {
+            "name": "type",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "SSAA",
+              "SATB",
+              "TTBB"
+            ],
+            "example": "SSAA, SATB, or TTBB"
+          },
+          {
+            "name": "length",
+            "in": "formData",
+            "required": true,
+            "type": "number",
+            "example": "4:05"
+          },
+          {
+            "name": "levelOfDifficulty",
+            "in": "formData",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1,
+            "maximum": 4,
+            "example": "3"
+          },
+          {
+            "name": "price",
+            "in": "formData",
+            "required": true,
+            "type": "number",
+            "example": "3.50"
+          },
+          {
+            "name": "minimumCopies",
+            "in": "formData",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "example": "10"
+          },
+          {
+            "name": "pdfDocument",
+            "in": "formData",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "mp3Recording",
+            "in": "formData",
+            "required": false,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created - the arrangement was successfully uploaded."
+          },
+          "400": {
+            "description": "Bad Request - missing or invalid parameters."
+          },
+          "500": {
+            "description": "Internal Server Error - an error occurred on the server."
+          }
+        }
+      }
     }
   }
 }
