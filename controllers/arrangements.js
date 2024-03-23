@@ -44,10 +44,9 @@ exports.createArrangement = async (req, res) => {
         if (!['SSAA', 'SATB', 'TTBB'].includes(type)) {
             return res.status(400).json({ message: 'Type must be SSAA, SATB, or TTBB.' });
         }
-        if (isNaN(length) || isNaN(levelOfDifficulty) || isNaN(price) || isNaN(minimumCopies)) {
-            return res.status(400).json({ message: 'Length, level of difficulty, price, and minimum copies must be numeric values.' });
+        if (isNaN(levelOfDifficulty) || isNaN(price) || isNaN(minimumCopies)) {
+            return res.status(400).json({ message: 'level of difficulty, price, and minimum copies must be numeric values.' });
         }
-        const lengthVal = Number(length);
         const levelOfDifficultyVal = Number(levelOfDifficulty);
         const priceVal = Number(price);
         const minimumCopiesVal = Number(minimumCopies);
@@ -69,7 +68,7 @@ exports.createArrangement = async (req, res) => {
             title,
             description,
             type,
-            length: lengthVal,
+            length,
             levelOfDifficulty: levelOfDifficultyVal,
             price: formattedPrice,
             minimumCopies: minimumCopiesVal,

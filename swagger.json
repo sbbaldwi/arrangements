@@ -224,7 +224,7 @@
             "name": "length",
             "in": "formData",
             "required": true,
-            "type": "number",
+            "type": "string",
             "example": "4:05"
           },
           {
