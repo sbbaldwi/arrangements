@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const arrangements = require('../controllers/arrangements'); 
+const arrangements = require('../controllers/arrangements');
 
-router.get('/arrangements/:id', arrangementsController.getArrangementById);
+router.get('/arrangements/:id', arrangements.getArrangementById);
 router.post('/', arrangements.uploadArrangement, arrangements.createArrangement);
-router.put('/arrangements/:id', arrangementsController.updateArrangement);
-router.delete('/arrangements/:id', arrangementsController.deleteArrangement);
+router.put('/arrangements/:id', arrangements.updateArrangement);
+router.delete('/arrangements/:id', arrangements.deleteArrangement);
 
 module.exports = router;
