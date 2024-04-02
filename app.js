@@ -44,14 +44,18 @@ app.use(session({ secret: 'secret', resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/auth/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/', (req, res) => {
+    res.send('<a href="/auth/google">Authenticate With Google</a>');
+})
 
-app.get('/auth/google/callback',
+app.get('/auth/google',
+    passport.authenticate('google', { scope: ['email', 'profile'] })
+)
+
+app.get('/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
-    (req, res) => {
-        // Successful authentication, redirect to api-docs or another page.
-        res.redirect('/api-docs');
+    function (req, res) {
+        res.redirect('https://brichristiansenarrangements.onrender.com/api-docs/');
     });
 
 mongodb.initDb((err, mongodb) => {
