@@ -23,13 +23,30 @@ app
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://brichristiansenarrangements.onrender.com/auth/google/callback"
+    callbackURL: "https://brichristiansenarrangements.onrender.com/auth/google/callback"
 },
-    function (accessToken, refreshToken, profile, cb) {
-        // Here, you would find or create a user in your database
-        // and return that user instance by calling cb(null, user);
-        console.log(profile);
-        cb(null, profile);
+    async function (accessToken, refreshToken, profile, cb) {
+        const db = getDb();
+        const collection = db.collection('account');
+        let user = await collection.findOne({ googleId: profile.id });
+
+        if (!user) {
+            // Create a new user if not found
+            user = await collection.insertOne({
+                googleId: profile.id,
+                email: profile.emails[0].value,
+                name: profile.displayName,
+                // Mark the account as needing profile completion
+                profileComplete: false
+            });
+        }
+
+        // If user exists but profile is incomplete, handle accordingly
+        if (user && !user.profileComplete) {
+            // Logic to mark for profile completion
+        }
+
+        cb(null, user);
     }
 ));
 
@@ -52,11 +69,13 @@ app.get('/auth/google',
     passport.authenticate('google', { scope: ['email', 'profile'] })
 )
 
-app.get('/google/callback',
+app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     function (req, res) {
-        res.redirect('https://brichristiansenarrangements.onrender.com/api-docs/');
-    });
+        // Redirecting to the api-docs page upon successful authentication
+        res.redirect('https://brichristiansenarrangements.onrender.com/api-docs');
+    }
+);
 
 mongodb.initDb((err, mongodb) => {
     if (err) {

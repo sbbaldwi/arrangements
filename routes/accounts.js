@@ -9,4 +9,6 @@ router.post('/', accountsController.createAccount);
 router.put('/:id', accountsController.updateAccount);
 router.delete('/:id', accountsController.deleteAccount);
 
+router.post('/signin', accountsController.signIn);
+
 module.exports = router;

@@ -93,11 +93,36 @@ const deleteAccount = async (req, res) => {
     }
 };
 
+const signIn = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const db = getDb();
+        const collection = db.collection('account');
+
+        const account = await collection.findOne({ email: email });
+        if (!account) {
+            return res.status(401).json({ message: 'Authentication failed' });
+        }
+
+        // Assuming passwords are hashed - compare using bcrypt
+        const passwordIsValid = bcrypt.compareSync(password, account.password);
+        if (!passwordIsValid) {
+            return res.status(401).json({ message: 'Authentication failed' });
+        }
+
+        // Generate a token or handle session login here
+        res.status(200).json({ message: 'Sign in successful', /* Token or user data */ });
+    } catch (err) {
+        res.status(500).json({ message: 'Error signing in', error: err.message });
+    }
+};
+
 
 module.exports = {
     getAll,
     getSingle,
     createAccount,
     updateAccount,
-    deleteAccount
+    deleteAccount,
+    signIn
 };
