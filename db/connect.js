@@ -1,33 +1,35 @@
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
-const MongoClient = require('mongodb').MongoClient;
 
-let _db;
-
-const initDb = (callback) => {
-    if (_db) {
-        console.log('Db is already initialized!');
-        return callback(null, _db);
+const connectDb = async () => {
+    try {
+        await mongoose.connect(process.env.CONNECTION_STRING);
+        console.log('MongoDB connected successfully.');
+    } catch (error) {
+        console.error('MongoDB connection failed:', error.message);
+        process.exit(1);
     }
-    MongoClient.connect(process.env.CONNECTION_STRING)
-        .then((client) => {
-            _db = client.db('arrangements'); // Call db() to get the database object
-            callback(null, _db);
-        })
-        .catch((err) => {
-            callback(err);
-        });
 };
 
-const getDb = () => {
-    if (!_db) {
-        throw Error('Db not initialized');
-    }
-    console.log('Database object:', _db);
-    return _db;
-};
+mongoose.connection.on('connected', () => {
+    console.log('Mongoose connected to db');
+});
 
-module.exports = {
-    getDb,
-    initDb
-};
+mongoose.connection.on('error', (err) => {
+    console.log(err.message);
+});
+
+mongoose.connection.on('disconnected', () => {
+    console.log('Mongoose connection is disconnected.');
+});
+
+// If the Node process ends, close the Mongoose connection
+process.on('SIGINT', () => {
+    mongoose.connection.close(() => {
+        console.log('Mongoose connection disconnected due to app termination');
+        process.exit(0);
+    });
+});
+
+module.exports = connectDb;

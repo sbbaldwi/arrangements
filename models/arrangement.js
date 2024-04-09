@@ -3,18 +3,26 @@ const mongoose = require('mongoose');
 const arrangementSchema = new mongoose.Schema({
     title: { type: String, required: true },
     composer: { type: String, required: true },
-    description: { type: String, required: true },
-    type: { type: String, enum: ['SSAA', 'SATB', 'TTBB'], required: true },
-    length: { type: Number, required: true },
-    levelOfDifficulty: { type: Number, required: true },
-    price: { type: Number, required: true },
-    minimumCopies: { type: Number, required: true },
-    pdfDocument: { type: String, required: true },
-    mp3Recording: { type: String, required: true },
-    coverImage: { type: String, required: true }
-});
+    ensembleType: {
+        type: String,
+        required: true,
+        enum: ['SSAA', 'SATB', 'TTBB']
+    },
+    difficultyLevel: {
+        type: Number,
+        required: true,
+        min: 1,
+        max: 4
+    },
+    minimumPurchase: { type: Number, required: true },
+    sheetMusic: {
+        type: String,
+        required: true
+    },
+    recording: {
+        type: String,
+        required: true
+    },
+}, { timestamps: true });
 
-// Create the model for arrangement
-const Arrangement = mongoose.model('arrangement', arrangementSchema);
-
-module.exports = Arrangement;
+module.exports = mongoose.model('Arrangement', arrangementSchema);
