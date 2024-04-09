@@ -51,16 +51,25 @@ const ArrangementController = {
             }
 
             if (req.files['coverImage'] && req.files['coverImage'][0]) {
-                const coverImagePath = req.files['coverImage'][0].path;
-                try {
-                    const dimensions = await sharp(coverImagePath).metadata();
-                    if (dimensions.width !== 500 || dimensions.height !== 500) {
-                        return res.status(400).json({ message: "Cover image must be 500x500 pixels." });
-                    }
-                    next();
-                } catch (error) {
-                    return res.status(500).json({ message: "Failed to process cover image", error: error.message });
+                const coverImage = req.files['coverImage'][0];
+
+                // Check file size
+                if (coverImage.size > MAX_FILE_SIZE) {
+                    return res.status(400).json({ message: "Cover image exceeds maximum allowed size." });
                 }
+
+                // Check content type
+                if (!isValidImageType(coverImage.mimetype)) {
+                    return res.status(400).json({ message: "Invalid image type for cover image." });
+                }
+
+                // Check dimensions
+                const dimensions = await sharp(coverImage.buffer).metadata();
+                if (dimensions.width !== 500 || dimensions.height !== 500) {
+                    return res.status(400).json({ message: "Cover image must be 500x500 pixels." });
+                }
+
+                return res.status(200).json({ message: "Cover image uploaded successfully." });
             } else {
                 return res.status(400).json({ message: "Cover image is required." });
             }
