@@ -49,6 +49,7 @@ const ArrangementController = {
             if (err instanceof multer.MulterError || err) {
                 return res.status(500).json({ message: "Error uploading files", error: err.message });
             }
+
         })
     },
 
@@ -66,10 +67,6 @@ const ArrangementController = {
                 }
             }
 
-            // Ensure a cover image is uploaded
-            if (!req.files['coverImage']) {
-                return res.status(400).json({ message: 'Cover image is required.' });
-            }
             const coverImagePath = req.files['coverImage'] ? req.files['coverImage'][0].path : '';
             const pdfDocumentPath = req.files['pdfDocument'] ? req.files['pdfDocument'][0].path : '';
             const mp3RecordingPath = req.files['mp3Recording'] ? req.files['mp3Recording'][0].path : '';
