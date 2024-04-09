@@ -42,6 +42,7 @@
       "post": {
         "summary": "Upload a new arrangement",
         "description": "Creates a new acapella arrangement with uploaded sheet music and recording",
+        "consumes": ["multipart/form-data"],
         "parameters": [
           {
             "name": "title",
