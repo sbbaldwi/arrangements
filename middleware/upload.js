@@ -1,46 +1,25 @@
-const path = require('path');
 const multer = require('multer');
+const path = require('path');
 
-// Define storage settings
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        let uploadPath;
-        if (file.mimetype === 'application/pdf') {
-            uploadPath = 'uploads/pdf/';
-        } else if (file.mimetype === 'audio/mpeg') { // Assuming MP3 files have 'audio/mpeg' mimetype
-            uploadPath = 'uploads/mp3/';
-        } else if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg') {
-            uploadPath = 'uploads/images/';
-        } else {
-            // Handle unsupported file types
-            return cb(new Error('Unsupported file type'));
-        }
-        cb(null, uploadPath);
-    },
-    filename: function(req, file, cb) {
-        let ext = path.extname(file.originalname);
-        cb(null, Date.now() + ext);
-    }
-});
-
-// Define file filter function
-const fileFilter = function(req, file, callback) {
-    if (file.mimetype === 'application/pdf' || file.mimetype === 'audio/mpeg' ||
-        file.mimetype === 'image/png' || file.mimetype === 'image/jpeg') {
-        callback(null, true);
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'application/pdf' || file.mimetype === 'audio/mpeg') {
+        cb(null, true);
     } else {
-        callback(new Error('Unsupported file type'));
+        cb(null, false); // Reject file
     }
 };
 
-// Initialize multer with settings
-const upload = multer({
-    storage: storage,
-    fileFilter: fileFilter,
-    limits: {
-        fileSize: 1024 * 1024 * 2 // Limit file size to 2MB
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const ext = path.extname(file.originalname); // Extract the file extension
+        cb(null, file.fieldname + '-' + uniqueSuffix + ext); // Append the original extension
     }
 });
 
-module.exports = upload;
+const upload = multer({ storage: storage, fileFilter: fileFilter });
 
+module.exports = upload;
