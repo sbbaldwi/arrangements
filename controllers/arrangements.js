@@ -2,6 +2,27 @@ const { getDb } = require('../db/connect');
 const { ObjectId } = require('mongodb');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
+
+const ensureDirSync = (dirPath) => {
+    if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+    }
+};
+
+// Paths where files will be uploaded
+// Ensure directories exist based on the relative paths used by multer
+const uploadsBasePath = path.join(__dirname, '../uploads');
+const imagesPath = path.join(uploadsBasePath, 'images');
+const audiosPath = path.join(uploadsBasePath, 'audios');
+const pdfsPath = path.join(uploadsBasePath, 'pdfs');
+
+ensureDirSync(imagesPath);
+ensureDirSync(audiosPath);
+ensureDirSync(pdfsPath);
+
+
+
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
