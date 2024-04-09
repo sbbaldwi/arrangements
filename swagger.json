@@ -302,6 +302,143 @@
           }
         }
       }
+    },
+    "/cart/{userId}": {
+      "get": {
+        "description": "Gets all items in the user's cart.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the user to retrieve cart items for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of cart items."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/cart": {
+      "post": {
+        "description": "Adds an item to the cart.",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Item to add to the cart",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string"
+                },
+                "arrangementId": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "required": [
+                "userId",
+                "arrangementId",
+                "quantity"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Item added to cart successfully."
+          },
+          "400": {
+            "description": "Bad Request - missing or invalid parameters."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/cart/{id}": {
+      "put": {
+        "description": "Updates the quantity of an item in the cart.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the cart item to update."
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "quantity": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "required": [
+                "quantity"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart item updated successfully."
+          },
+          "400": {
+            "description": "Bad Request - missing or invalid parameters."
+          },
+          "404": {
+            "description": "Not Found - the cart item with the given ID was not found."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes an item from the cart.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the cart item to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart item deleted successfully."
+          },
+          "404": {
+            "description": "Not Found - the cart item with the given ID was not found."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   }
 }
