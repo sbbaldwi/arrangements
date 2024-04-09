@@ -10,7 +10,7 @@ const ensureDirSync = (dirPath) => {
     }
 };
 
-const uploadsBasePath = process.env.UPLOADS_BASE_PATH || path.join(__dirname, 'uploads');
+const uploadsBasePath = path.join(__dirname, '../uploads');
 const imagesPath = path.join(uploadsBasePath, 'images');
 const audiosPath = path.join(uploadsBasePath, 'audios');
 const pdfsPath = path.join(uploadsBasePath, 'pdfs');
