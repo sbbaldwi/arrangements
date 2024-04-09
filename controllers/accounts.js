@@ -33,4 +33,33 @@ exports.authenticateUser = async (req, res) => {
     }
 };
 
+exports.updateAccount = async (req, res) => {
+    try {
+        const accountId = req.params.id;
+        const updatedData = req.body;
+        const updatedAccount = await Account.findByIdAndUpdate(accountId, updatedData, { new: true });
+        if (updatedAccount) {
+            res.status(200).json({ message: 'Account updated successfully', account: updatedAccount });
+        } else {
+            res.status(404).json({ message: 'Account not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to update account', error: error.message });
+    }
+};
+
+exports.deleteAccount = async (req, res) => {
+    try {
+        const accountId = req.params.id;
+        const deletedAccount = await Account.findByIdAndDelete(accountId);
+        if (deletedAccount) {
+            res.status(200).json({ message: 'Account deleted successfully' });
+        } else {
+            res.status(404).json({ message: 'Account not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to delete account', error: error.message });
+    }
+};
+
 // Add more CRUD operations as needed (update, delete, etc.)

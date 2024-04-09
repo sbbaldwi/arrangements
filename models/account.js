@@ -26,4 +26,4 @@ accountSchema.methods.comparePassword = function(password, callback) {
     });
 };
 
-module.exports = mongoose.model('Account', accountSchema);
+module.exports = mongoose.model('Account', accountSchema, 'account');

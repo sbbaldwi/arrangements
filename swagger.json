@@ -42,7 +42,9 @@
       "post": {
         "summary": "Upload a new arrangement",
         "description": "Creates a new acapella arrangement with uploaded sheet music and recording",
-        "consumes": ["multipart/form-data"],
+        "consumes": [
+          "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "title",
@@ -190,6 +192,125 @@
             "description": "Server error"
           }
         }
+      },
+      "/accounts": {
+        "post": {
+          "summary": "Create a new account",
+          "description": "Creates a new user account",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "description": "Account object that needs to be created",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Account"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Account created"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/accounts/authenticate": {
+        "post": {
+          "summary": "Authenticate a user",
+          "description": "Authenticates a user by email and password",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "description": "Email and password of the user",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User authenticated"
+            },
+            "401": {
+              "description": "Authentication failed"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
+      },
+      "/accounts/{id}": {
+        "delete": {
+          "summary": "Delete an account by ID",
+          "description": "Deletes a single user account",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Account deleted"
+            },
+            "404": {
+              "description": "Account not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
+        "put": {
+          "summary": "Update an account by ID",
+          "description": "Updates an existing user account",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Account object that needs to be updated",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Account"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Account updated"
+            },
+            "404": {
+              "description": "Account not found"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        }
       }
     }
   },
@@ -228,6 +349,26 @@
         "recording": {
           "type": "string",
           "description": "Path to the uploaded recording file"
+        }
+      }
+    },
+    "Account": {
+      "type": "object",
+      "required": [
+        "username",
+        "email",
+        "password"
+      ],
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "password": {
+          "type": "string"
         }
       }
     }
