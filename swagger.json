@@ -193,6 +193,92 @@
         }
       }
     },
+    "/arrangements/{id}": {
+      "get": {
+        "description": "Retrieves a single arrangement by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique identifier of the arrangement."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single arrangement.",
+            "schema": {
+              "$ref": "#/definitions/Arrangement"
+            }
+          },
+          "404": {
+            "description": "Arrangement not found."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "Updates an existing arrangement identified by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the arrangement to be updated."
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Arrangement object that needs to be updated.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Arrangement"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Arrangement updated successfully."
+          },
+          "400": {
+            "description": "Invalid input."
+          },
+          "404": {
+            "description": "Arrangement not found."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes an arrangement by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the arrangement to delete."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Arrangement deleted successfully."
+          },
+          "404": {
+            "description": "Arrangement not found."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/arrangements/": {
       "post": {
         "description": "Allows users to upload a new music arrangement for sale, including a mandatory PDF document and an optional MP3 recording.",
@@ -299,6 +385,23 @@
           },
           "500": {
             "description": "Internal Server Error - an error occurred on the server."
+          }
+        }
+      },
+      "get": {
+        "description": "Retrieves all arrangements",
+        "responses": {
+          "200": {
+            "description": "An array of arrangements",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Arrangement"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
