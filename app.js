@@ -6,16 +6,25 @@ const swaggerDocument = require('./swagger.json');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
+const MongoStore = require('connect-mongo'); // Import connect-mongo
 const cors = require('cors');
-
 
 const port = process.env.PORT || 8080;
 const app = express();
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
+const CONNECTION_STRING = process.env.CONNECTION_STRING;
+// Use session management middleware with connect-mongo
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: CONNECTION_STRING
+    })
+}));
 
-app.use(session({ secret: 'secret', resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -60,9 +69,6 @@ passport.use(new GoogleStrategy({
 // Serialize and deserialize user instances to and from the session.
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
-
-// Use session management middleware
-app.use(session({ secret: 'secret', resave: false, saveUninitialized: true }));
 
 // Initialize Passport and restore authentication state, if any, from the session.
 app.use(passport.initialize());
