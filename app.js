@@ -33,6 +33,8 @@ app
     .use('/', require('./routes/index'))
     .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+app.use('/uploads', express.static('uploads'));
+
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
