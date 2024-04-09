@@ -10,9 +10,7 @@ const ensureDirSync = (dirPath) => {
     }
 };
 
-// Paths where files will be uploaded
-// Ensure directories exist based on the relative paths used by multer
-const uploadsBasePath = path.join(__dirname, '../uploads');
+const uploadsBasePath = process.env.UPLOADS_BASE_PATH || './uploads';;
 const imagesPath = path.join(uploadsBasePath, 'images');
 const audiosPath = path.join(uploadsBasePath, 'audios');
 const pdfsPath = path.join(uploadsBasePath, 'pdfs');
@@ -22,7 +20,7 @@ module.exports = function (app) {
     ensureDirSync(audiosPath);
     ensureDirSync(pdfsPath);
 
-    app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+    app.use('/uploads', express.static(path.resolve(uploadsBasePath)));
 };
 
 
