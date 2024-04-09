@@ -92,9 +92,10 @@ const ArrangementController = {
                 }
             }
 
-            const coverImagePath = req.files['uploads'] ? req.files['uploads'][0].path : '';
+            const coverImagePath = req.files['coverImage'] ? req.files['coverImage'][0].path : '';
             const pdfDocumentPath = req.files['pdfDocument'] ? req.files['pdfDocument'][0].path : '';
             const mp3RecordingPath = req.files['mp3Recording'] ? req.files['mp3Recording'][0].path : '';
+
 
             // Additional validations as in the old version
             if (!['SSAA', 'SATB', 'TTBB'].includes(req.body.type)) {
