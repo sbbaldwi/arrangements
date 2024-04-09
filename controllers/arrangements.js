@@ -106,19 +106,20 @@ exports.updateArrangement = (req, res) => {
     });
 };
 
-// Delete an arrangement
 exports.deleteArrangement = (req, res) => {
   const id = req.params.id;
-  Arrangement.findByIdAndRemove(id)
-    .then(result => {
-      if (result) {
-        res.status(200).json({ message: "Arrangement deleted successfully" });
+  Arrangement.findById(id)
+    .then(arrangement => {
+      if (arrangement) {
+        console.log("Arrangement found:", arrangement);
+        // Proceed with deletion
       } else {
-        res.status(404).json({ message: "Arrangement not found" });
+        console.log("Arrangement not found");
+        // Return 404 response indicating arrangement not found
       }
     })
     .catch(err => {
-      console.error("Error deleting arrangement:", err);
-      res.status(500).json({ message: "Error deleting arrangement", error: err });
+      console.error("Error finding arrangement:", err);
+      // Return 500 response for server error
     });
 };
