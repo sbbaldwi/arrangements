@@ -31,9 +31,8 @@ app
     .use(cors())
     .use(express.json())
     .use('/', require('./routes/index'))
-    .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-app.use('/uploads', express.static('uploads'));
+    .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+    .use('/uploads', express.static('uploads'));
 
 
 passport.use(new GoogleStrategy({

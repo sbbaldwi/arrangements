@@ -24,19 +24,17 @@ ensureDirSync(pdfsPath);
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        // Save files in different directories based on their type
-        let uploadPath = path.join(__dirname, '../uploads'); // Default path
+        let uploadPath = uploadsBasePath; // Use the base path directly
         if (file.mimetype.includes('image')) {
-            uploadPath = path.join(__dirname, '../uploads/images');
+            uploadPath = imagesPath; // Defined relative to uploadsBasePath
         } else if (file.mimetype.includes('pdf')) {
-            uploadPath = path.join(__dirname, '../uploads/pdfs');
+            uploadPath = pdfsPath;
         } else if (file.mimetype.includes('audio/mpeg')) {
-            uploadPath = path.join(__dirname, '../uploads/audios');
+            uploadPath = audiosPath;
         }
         cb(null, uploadPath);
     },
     filename: function (req, file, cb) {
-        // Generate a unique name for each file
         cb(null, `${Date.now()}-${file.originalname}`);
     }
 });
