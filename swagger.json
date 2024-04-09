@@ -1,398 +1,30 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "My API",
-    "description": "Accounts API",
-    "version": "1.0.0"
+    "description": "API for managing acapella arrangements",
+    "version": "1.0.0",
+    "title": "Acapella Arrangements API"
   },
-  "host": "",
+  "host": "localhost:8080",
   "basePath": "/",
   "schemes": [
-    "https"
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "multipart/form-data"
+  ],
+  "produces": [
+    "application/json"
   ],
   "paths": {
-    "/accounts/": {
+    "/arrangements": {
       "get": {
-        "description": "gets all accounts in database",
+        "summary": "Get all arrangements",
+        "description": "Returns all acapella arrangements",
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new account with the provided data.",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "firstName": {
-                  "type": "string",
-                  "example": "Nacho"
-                },
-                "lastName": {
-                  "type": "string",
-                  "example": "Libre"
-                },
-                "email": {
-                  "type": "string",
-                  "format": "email",
-                  "example": "email@gmail.com"
-                },
-                "phoneNumber": {
-                  "type": "string",
-                  "example": "123-456-7890"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "Passwerd"
-                },
-                "birthday": {
-                  "type": "string",
-                  "example": "01/01/2001"
-                },
-                "fav_color": {
-                  "type": "string",
-                  "example": "Orange"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/accounts/{id}": {
-      "get": {
-        "description": "Retrieves an account by its ID.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "put": {
-        "description": "Updates an existing account identified by ID with the provided details.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "The ID of the account to be updated."
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "firstName": {
-                  "type": "string",
-                  "example": "John"
-                },
-                "lastName": {
-                  "type": "string",
-                  "example": "Doe"
-                },
-                "email": {
-                  "type": "string",
-                  "format": "email",
-                  "example": "john.doe@example.com"
-                },
-                "phoneNumber": {
-                  "type": "string",
-                  "example": "123-456-7890"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "newpassword123"
-                },
-                "birthday": {
-                  "type": "string",
-                  "example": "01/01/2001"
-                },
-                "fav_color": {
-                  "type": "string",
-                  "example": "Orange"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content - the account was successfully updated."
-          },
-          "400": {
-            "description": "Bad Request - the request was invalid."
-          },
-          "404": {
-            "description": "Not Found - the account with the given ID was not found."
-          },
-          "500": {
-            "description": "Internal Server Error - an error occurred on the server."
-          }
-        }
-      },
-      "delete": {
-        "description": "Deletes an account by its ID.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/arrangements/{id}": {
-      "get": {
-        "description": "Retrieves a single arrangement by its ID.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "The unique identifier of the arrangement."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A single arrangement.",
-            "schema": {
-              "$ref": "#/definitions/Arrangement"
-            }
-          },
-          "404": {
-            "description": "Arrangement not found."
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "put": {
-        "description": "Updates an existing arrangement identified by ID.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "The ID of the arrangement to be updated."
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Arrangement object that needs to be updated.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Arrangement"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Arrangement updated successfully."
-          },
-          "400": {
-            "description": "Invalid input."
-          },
-          "404": {
-            "description": "Arrangement not found."
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
-        "description": "Deletes an arrangement by its ID.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "The ID of the arrangement to delete."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Arrangement deleted successfully."
-          },
-          "404": {
-            "description": "Arrangement not found."
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/arrangements/": {
-      "post": {
-        "description": "Allows users to upload a new music arrangement for sale, including a mandatory PDF document and an optional MP3 recording.",
-        "consumes": [
-          "multipart/form-data"
-        ],
-        "parameters": [
-          {
-            "name": "title",
-            "in": "formData",
-            "required": true,
-            "type": "string",
-            "example": "Hunger Games Medley"
-          },
-          {
-            "name": "composer",
-            "in": "formData",
-            "required": true,
-            "type": "string",
-            "example": "Bri Christiansen"
-          },
-          {
-            "name": "description",
-            "in": "formData",
-            "required": true,
-            "type": "string",
-            "example": "This arrangement includes Everybody Wants to Rule the World, Yellow Flicker Beat, and the Hanging Tree from the Hunger Games movie series."
-          },
-          {
-            "name": "type",
-            "in": "formData",
-            "required": true,
-            "type": "string",
-            "enum": [
-              "SSAA",
-              "SATB",
-              "TTBB"
-            ],
-            "example": "SSAA, SATB, or TTBB"
-          },
-          {
-            "name": "length",
-            "in": "formData",
-            "required": true,
-            "type": "string",
-            "example": "4:05"
-          },
-          {
-            "name": "levelOfDifficulty",
-            "in": "formData",
-            "required": true,
-            "type": "integer",
-            "enum": [
-              1,
-              2,
-              3,
-              4
-            ],
-            "format": "int32",
-            "minimum": 1,
-            "maximum": 4,
-            "example": "3"
-          },
-          {
-            "name": "price",
-            "in": "formData",
-            "required": true,
-            "type": "number",
-            "example": "3.50"
-          },
-          {
-            "name": "minimumCopies",
-            "in": "formData",
-            "required": true,
-            "type": "integer",
-            "format": "int32",
-            "example": "10"
-          },
-          {
-            "name": "pdfDocument",
-            "in": "formData",
-            "required": true,
-            "type": "file"
-          },
-          {
-            "name": "mp3Recording",
-            "in": "formData",
-            "required": false,
-            "type": "file"
-          },
-          {
-            "name": "coverImage",
-            "in": "formdata",
-            "required": true,
-            "type": "file"
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created - the arrangement was successfully uploaded."
-          },
-          "400": {
-            "description": "Bad Request - missing or invalid parameters."
-          },
-          "500": {
-            "description": "Internal Server Error - an error occurred on the server."
-          }
-        }
-      },
-      "get": {
-        "description": "Retrieves all arrangements",
-        "responses": {
-          "200": {
-            "description": "An array of arrangements",
+            "description": "A list of arrangements",
             "schema": {
               "type": "array",
               "items": {
@@ -401,262 +33,200 @@
             }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Server error"
           }
         }
-      }
-    },
-    "/cart/{userId}": {
-      "get": {
-        "description": "Gets all items in the user's cart.",
+      },
+      "post": {
+        "summary": "Upload a new arrangement",
+        "description": "Creates a new acapella arrangement with uploaded sheet music and recording",
         "parameters": [
           {
-            "name": "userId",
-            "in": "path",
+            "name": "title",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "composer",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "ensembleType",
+            "in": "formData",
             "required": true,
             "type": "string",
-            "description": "The ID of the user to retrieve cart items for."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "An array of cart items."
+            "enum": [
+              "SSAA",
+              "SATB",
+              "TTBB"
+            ]
           },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/cart": {
-      "post": {
-        "description": "Adds an item to the cart.",
-        "consumes": [
-          "application/json"
-        ],
-        "parameters": [
           {
-            "in": "body",
-            "name": "body",
-            "description": "Item to add to the cart",
+            "name": "difficultyLevel",
+            "in": "formData",
             "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "userId": {
-                  "type": "string"
-                },
-                "arrangementId": {
-                  "type": "string"
-                },
-                "quantity": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              },
-              "required": [
-                "userId",
-                "arrangementId",
-                "quantity"
-              ]
-            }
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          {
+            "name": "minimumPurchase",
+            "in": "formData",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "sheetMusic",
+            "in": "formData",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "recording",
+            "in": "formData",
+            "required": true,
+            "type": "file"
           }
         ],
         "responses": {
           "201": {
-            "description": "Item added to cart successfully."
-          },
-          "400": {
-            "description": "Bad Request - missing or invalid parameters."
+            "description": "Arrangement created"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Server error or validation error"
           }
         }
       }
     },
-    "/cart/{id}": {
-      "put": {
-        "description": "Updates the quantity of an item in the cart.",
+    "/arrangements/{id}": {
+      "get": {
+        "summary": "Get an arrangement by ID",
+        "description": "Returns a single acapella arrangement",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The ID of the cart item to update."
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single arrangement",
+            "schema": {
+              "$ref": "#/definitions/Arrangement"
+            }
+          },
+          "404": {
+            "description": "Arrangement not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an arrangement by ID",
+        "description": "Updates an existing acapella arrangement",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           },
           {
             "in": "body",
             "name": "body",
+            "description": "Arrangement object that needs to be updated",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "quantity": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              },
-              "required": [
-                "quantity"
-              ]
+              "$ref": "#/definitions/Arrangement"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Cart item updated successfully."
-          },
-          "400": {
-            "description": "Bad Request - missing or invalid parameters."
+            "description": "Arrangement updated"
           },
           "404": {
-            "description": "Not Found - the cart item with the given ID was not found."
+            "description": "Arrangement not found"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Server error"
           }
         }
       },
       "delete": {
-        "description": "Deletes an item from the cart.",
+        "summary": "Delete an arrangement by ID",
+        "description": "Deletes a single acapella arrangement",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "The ID of the cart item to delete."
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "Cart item deleted successfully."
+            "description": "Arrangement deleted"
           },
           "404": {
-            "description": "Not Found - the cart item with the given ID was not found."
+            "description": "Arrangement not found"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Server error"
           }
         }
       }
     }
   },
   "definitions": {
-    "accounts": {
-      "type": "object",
-      "properties": {
-        "firstName": {
-          "type": "string",
-          "example": "Nacho"
-        },
-        "lastName": {
-          "type": "string",
-          "example": "Libre"
-        },
-        "email": {
-          "type": "string",
-          "format": "email",
-          "example": "email@gmail.com"
-        },
-        "phoneNumber": {
-          "type": "string",
-          "example": "123-456-7890"
-        },
-        "password": {
-          "type": "string",
-          "example": "Passwerd"
-        },
-        "birthday": {
-          "type": "string",
-          "example": "01/01/2001"
-        },
-        "fav_color": {
-          "type": "string",
-          "example": "Orange"
-        }
-      }
-    },
     "Arrangement": {
       "type": "object",
+      "required": [
+        "title",
+        "composer",
+        "ensembleType",
+        "difficultyLevel",
+        "minimumPurchase"
+      ],
       "properties": {
         "title": {
-          "type": "string",
-          "example": "Hunger Games Medley"
+          "type": "string"
         },
         "composer": {
-          "type": "string",
-          "example": "Bri Christiansen"
+          "type": "string"
         },
-        "description": {
-          "type": "string",
-          "example": "This arrangement includes Everybody Wants to Rule the World, Yellow Flicker Beat, and the Hanging Tree from the Hunger Games movie series."
+        "ensembleType": {
+          "type": "string"
         },
-        "type": {
-          "type": "string",
-          "enum": [
-            "SSAA",
-            "SATB",
-            "TTBB"
-          ],
-          "example": "SSAA"
-        },
-        "length": {
-          "type": "string",
-          "example": "4:05"
-        },
-        "levelOfDifficulty": {
+        "difficultyLevel": {
           "type": "integer",
-          "format": "int32",
-          "example": 3
+          "format": "int32"
         },
-        "price": {
-          "type": "number",
-          "example": 3.50
-        },
-        "minimumCopies": {
+        "minimumPurchase": {
           "type": "integer",
-          "format": "int32",
-          "example": 10
+          "format": "int32"
         },
-        "pdfDocument": {
+        "sheetMusic": {
           "type": "string",
-          "example": "path/to/sheetMusic.pdf"
+          "description": "Path to the uploaded sheet music file"
         },
-        "mp3Recording": {
+        "recording": {
           "type": "string",
-          "example": "path/to/recording.mp3"
-        },
-        "coverImage": {
-          "type": "string",
-          "example": "path/to/image.jpg"
+          "description": "Path to the uploaded recording file"
         }
       }
-    },
-    "cart": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "string",
-          "example": "12345"
-        },
-        "arrangementId": {
-          "type": "string",
-          "example": "67890"
-        },
-        "quantity": {
-          "type": "integer",
-          "format": "int32",
-          "example": 2
-        }
-      },
-      "required": [
-        "userId",
-        "arrangementId",
-        "quantity"
-      ]
     }
   }
 }
