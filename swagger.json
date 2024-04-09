@@ -623,7 +623,7 @@
         },
         "pdfDocument": {
           "type": "string",
-          "example": "path/to/Adele_Medley.pdf"
+          "example": "path/to/sheetMusic.pdf"
         },
         "mp3Recording": {
           "type": "string",
