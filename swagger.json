@@ -543,5 +543,120 @@
         }
       }
     }
+  },
+  "definitions": {
+    "accounts": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "Nacho"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Libre"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "example": "email@gmail.com"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "example": "123-456-7890"
+        },
+        "password": {
+          "type": "string",
+          "example": "Passwerd"
+        },
+        "birthday": {
+          "type": "string",
+          "example": "01/01/2001"
+        },
+        "fav_color": {
+          "type": "string",
+          "example": "Orange"
+        }
+      }
+    },
+    "Arrangement": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Hunger Games Medley"
+        },
+        "composer": {
+          "type": "string",
+          "example": "Bri Christiansen"
+        },
+        "description": {
+          "type": "string",
+          "example": "This arrangement includes Everybody Wants to Rule the World, Yellow Flicker Beat, and the Hanging Tree from the Hunger Games movie series."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "SSAA",
+            "SATB",
+            "TTBB"
+          ],
+          "example": "SSAA"
+        },
+        "length": {
+          "type": "string",
+          "example": "4:05"
+        },
+        "levelOfDifficulty": {
+          "type": "integer",
+          "format": "int32",
+          "example": 3
+        },
+        "price": {
+          "type": "number",
+          "example": 3.50
+        },
+        "minimumCopies": {
+          "type": "integer",
+          "format": "int32",
+          "example": 10
+        },
+        "pdfDocument": {
+          "type": "string",
+          "example": "path/to/Adele_Medley.pdf"
+        },
+        "mp3Recording": {
+          "type": "string",
+          "example": "path/to/recording.mp3"
+        },
+        "coverImage": {
+          "type": "string",
+          "example": "path/to/image.jpg"
+        }
+      }
+    },
+    "cart": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "12345"
+        },
+        "arrangementId": {
+          "type": "string",
+          "example": "67890"
+        },
+        "quantity": {
+          "type": "integer",
+          "format": "int32",
+          "example": 2
+        }
+      },
+      "required": [
+        "userId",
+        "arrangementId",
+        "quantity"
+      ]
+    }
   }
 }
