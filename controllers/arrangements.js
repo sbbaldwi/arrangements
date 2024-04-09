@@ -22,7 +22,7 @@ const ArrangementController = {
     getAllArrangements: async (req, res) => {
         try {
             const db = await getDb();
-            const collection = db.collection('bcarrangements');
+            const collection = db.collection('arrangements');
             const arrangements = await collection.find({}).toArray();
             res.status(200).json(arrangements);
         } catch (err) {
@@ -33,7 +33,7 @@ const ArrangementController = {
     getArrangementById: async (req, res) => {
         try {
             const db = await getDb();
-            const collection = db.collection('bcarrangements');
+            const collection = db.collection('arrangements');
             const arrangement = await collection.findOne({ _id: new ObjectId(req.params.id) });
             if (!arrangement) {
                 return res.status(404).json({ message: 'Arrangement not found' });
@@ -81,7 +81,7 @@ const ArrangementController = {
     createArrangement: async (req, res) => {
         try {
             const db = await getDb();
-            const collection = db.collection('bcarrangements');
+            const collection = db.collection('arrangements');
 
             // Validate required fields
             const requiredFields = ['title', 'composer', 'description', 'type', 'length', 'levelOfDifficulty', 'price', 'minimumCopies'];
@@ -95,7 +95,9 @@ const ArrangementController = {
             if (!req.files['coverImage']) {
                 return res.status(400).json({ message: 'Cover image is required.' });
             }
-            const coverImagePath = req.files['coverImage'][0].path;
+            const coverImagePath = req.files['coverImage'] ? req.files['coverImage'][0].path : '';
+            const pdfDocumentPath = req.files['pdfDocument'] ? req.files['pdfDocument'][0].path : '';
+            const mp3RecordingPath = req.files['mp3Recording'] ? req.files['mp3Recording'][0].path : '';
 
             // Additional validations as in the old version
             if (!['SSAA', 'SATB', 'TTBB'].includes(req.body.type)) {
@@ -109,9 +111,9 @@ const ArrangementController = {
             // Insert the arrangement into the database
             const result = await collection.insertOne({
                 ...req.body,
-                pdfDocument: req.files['pdfDocument'] ? req.files['pdfDocument'][0].path : '',
-                mp3Recording: req.files['mp3Recording'] ? req.files['mp3Recording'][0].path : '',
-                coverImage: coverImagePath // Include the cover image path in the database document
+                pdfDocument: pdfDocumentPath,
+                mp3Recording: mp3RecordingPath,
+                coverImage: coverImagePath
             });
 
             res.status(201).json({ message: "Arrangement created successfully", id: result.insertedId });
@@ -124,7 +126,7 @@ const ArrangementController = {
     updateArrangement: async (req, res) => {
         try {
             const db = await getDb();
-            const collection = db.collection('bcarrangements');
+            const collection = db.collection('arrangements');
             const result = await collection.updateOne(
                 { _id: new ObjectId(req.params.id) },
                 { $set: req.body }
@@ -141,7 +143,7 @@ const ArrangementController = {
     deleteArrangement: async (req, res) => {
         try {
             const db = await getDb();
-            const collection = db.collection('bcarrangements');
+            const collection = db.collection('arrangements');
             const result = await collection.deleteOne({ _id: new ObjectId(req.params.id) });
             if (result.deletedCount === 0) {
                 return res.status(404).json({ message: 'Arrangement not found' });

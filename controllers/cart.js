@@ -18,7 +18,7 @@ const CartController = {
     addItemToCart: async (req, res) => {
         try {
             const db = await getDb();
-            const arrangementsCollection = db.collection('bcarrangements');
+            const arrangementsCollection = db.collection('arrangements');
             const cartCollection = db.collection('cart');
 
             const arrangementId = req.body.arrangementId;
@@ -49,7 +49,7 @@ const CartController = {
     updateCartItem: async (req, res) => {
         try {
             const db = await getDb();
-            const arrangementsCollection = db.collection('bcarrangements');
+            const arrangementsCollection = db.collection('arrangements');
             const cartCollection = db.collection('cart');
 
             const cartItemId = req.params.id;
