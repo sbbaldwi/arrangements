@@ -1,33 +1,27 @@
-const { getDb } = require('../db/connect');
-const { ObjectId } = require('mongodb');
-const path = require('path');
-const multer = require('multer');
 const Arrangement = require('../models/arrangement');
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        // Save files to a directory on your server
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        // Naming convention for saved files
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, file.fieldname + '-' + uniqueSuffix);
-    }
-});
+const multer = require('multer');
+const path = require('path');
 
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'application/pdf' || file.mimetype === 'audio/mpeg') {
-        cb(null, true);
-    } else {
-        cb(null, false); // Reject file
-    }
+  if (file.mimetype === 'application/pdf' || file.mimetype === 'audio/mpeg') {
+      cb(null, true);
+  } else {
+      cb(null, false); // Reject file
+  }
 };
 
-const upload = multer({
-    storage: storage,
-    fileFilter: fileFilter
-}).fields([{ name: 'sheetMusic', maxCount: 1 }, { name: 'recording', maxCount: 1 }]);
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      const ext = path.extname(file.originalname); // Extract the file extension
+      cb(null, file.fieldname + '-' + uniqueSuffix + ext); // Append the original extension
+  }
+});
+
+const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 
 exports.getAllArrangements = (req, res) => {
