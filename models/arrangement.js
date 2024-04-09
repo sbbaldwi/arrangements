@@ -25,4 +25,5 @@ const arrangementSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Arrangement', arrangementSchema);
+module.exports = mongoose.model('Arrangement', arrangementSchema, 'arrangements');
+
