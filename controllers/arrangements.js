@@ -118,6 +118,7 @@ exports.deleteArrangement = (req, res) => {
       }
     })
     .catch(err => {
+      console.error("Error deleting arrangement:", err);
       res.status(500).json({ message: "Error deleting arrangement", error: err });
     });
 };
