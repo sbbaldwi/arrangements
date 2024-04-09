@@ -17,9 +17,13 @@ const imagesPath = path.join(uploadsBasePath, 'images');
 const audiosPath = path.join(uploadsBasePath, 'audios');
 const pdfsPath = path.join(uploadsBasePath, 'pdfs');
 
-ensureDirSync(imagesPath);
-ensureDirSync(audiosPath);
-ensureDirSync(pdfsPath);
+module.exports = function (app) {
+    ensureDirSync(imagesPath);
+    ensureDirSync(audiosPath);
+    ensureDirSync(pdfsPath);
+
+    app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+};
 
 
 
