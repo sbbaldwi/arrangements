@@ -3,20 +3,40 @@ const { ObjectId } = require('mongodb');
 const multer = require('multer');
 const path = require('path');
 
-// Multer setup for file uploads
 const storage = multer.diskStorage({
-    destination: 'uploads/', // Ensure this directory exists
+    destination: function (req, file, cb) {
+        // Save files in different directories based on their type
+        let uploadPath = path.join(__dirname, '../uploads'); // Default path
+        if (file.mimetype.includes('image')) {
+            uploadPath = path.join(__dirname, '../uploads/images');
+        } else if (file.mimetype.includes('pdf')) {
+            uploadPath = path.join(__dirname, '../uploads/pdfs');
+        } else if (file.mimetype.includes('audio/mpeg')) {
+            uploadPath = path.join(__dirname, '../uploads/audios');
+        }
+        cb(null, uploadPath);
+    },
     filename: function (req, file, cb) {
-        const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
-        cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
+        // Generate a unique name for each file
+        cb(null, `${Date.now()}-${file.originalname}`);
     }
 });
 
-const upload = multer({ storage: storage }).fields([
-    { name: 'pdfDocument', maxCount: 1 },
-    { name: 'mp3Recording', maxCount: 1 },
-    { name: 'coverImage', maxCount: 1 }
-]);
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 1024 * 1024 * 50 }, // for example, limit file size to 50MB
+    fileFilter: function (req, file, cb) {
+        // Accept images, PDFs, and MP3s only
+        if (file.mimetype.includes('image') ||
+            file.mimetype.includes('pdf') ||
+            file.mimetype.includes('audio/mpeg')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Only .pdf, .mp3, and image files are allowed!'), false);
+        }
+    }
+}).fields([{ name: 'coverImage', maxCount: 1 }, { name: 'pdfDocument', maxCount: 1 }, { name: 'mp3Recording', maxCount: 1 }]);
+
 
 const ArrangementController = {
     getAllArrangements: async (req, res) => {
@@ -45,12 +65,17 @@ const ArrangementController = {
     },
 
     uploadMiddleware: (req, res, next) => {
-        upload(req, res, async function (err) {
-            if (err instanceof multer.MulterError || err) {
-                return res.status(500).json({ message: "Error uploading files", error: err.message });
+        upload(req, res, function (err) {
+            if (err instanceof multer.MulterError) {
+                // A Multer error occurred when uploading.
+                return res.status(500).json({ message: "Multer error uploading files", error: err.message });
+            } else if (err) {
+                // An unknown error occurred when uploading.
+                return res.status(500).json({ message: "Unknown error uploading files", error: err.message });
             }
-
-        })
+            // Everything went fine.
+            next(); // Proceed to the next middleware or controller action
+        });
     },
 
 
@@ -67,7 +92,7 @@ const ArrangementController = {
                 }
             }
 
-            const coverImagePath = req.files['coverImage'] ? req.files['coverImage'][0].path : '';
+            const coverImagePath = req.files['uploads'] ? req.files['uploads'][0].path : '';
             const pdfDocumentPath = req.files['pdfDocument'] ? req.files['pdfDocument'][0].path : '';
             const mp3RecordingPath = req.files['mp3Recording'] ? req.files['mp3Recording'][0].path : '';
 

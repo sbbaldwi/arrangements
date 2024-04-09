@@ -4,7 +4,7 @@ const arrangements = require('../controllers/arrangements');
 
 router.get('/:id', arrangements.getArrangementById);
 router.get('/', arrangements.getAllArrangements)
-router.post('/', arrangements.uploadMiddleware, arrangements.createArrangement); 
+router.post('/', arrangements.uploadMiddleware, arrangements.createArrangement);
 router.put('/:id', arrangements.updateArrangement);
 router.delete('/:id', arrangements.deleteArrangement);
 

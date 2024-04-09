@@ -23,6 +23,7 @@ app
     .use(cors())
     .use(express.json())
     .use('/', require('./routes/index'))
+    .use('uploads', express.static('uploads'))
     .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
