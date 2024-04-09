@@ -1,58 +1,29 @@
 const { getDb } = require('../db/connect');
 const { ObjectId } = require('mongodb');
-const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const multer = require('multer');
+const upload = multer();
 
-const ensureDirSync = (dirPath) => {
-    if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
-    }
-};
+const Arrangement = require('../models/arrangement');
 
-const uploadsBasePath = '/opt/render/project/src/uploads';
-const imagesPath = path.join(uploadsBasePath, 'images');
-const audiosPath = path.join(uploadsBasePath, 'audios');
-const pdfsPath = path.join(uploadsBasePath, 'pdfs');
-
-ensureDirSync(imagesPath);
-ensureDirSync(audiosPath);
-ensureDirSync(pdfsPath);
-
-
-
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        let uploadPath = uploadsBasePath; // Use the base path directly
-        if (file.mimetype.includes('image')) {
-            uploadPath = imagesPath; // Defined relative to uploadsBasePath
-        } else if (file.mimetype.includes('pdf')) {
-            uploadPath = pdfsPath;
-        } else if (file.mimetype.includes('audio/mpeg')) {
-            uploadPath = audiosPath;
-        }
-        cb(null, uploadPath);
-    },
-    filename: function (req, file, cb) {
-        cb(null, `${Date.now()}-${file.originalname}`);
-    }
+const mongoose = require('mongoose');
+const FileSchema = new mongoose.Schema({
+    name: String,
+    data: Buffer,
+    contentType: String
 });
+const FileModel = mongoose.model('File', FileSchema);
 
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 1024 * 1024 * 50 }, // for example, limit file size to 50MB
-    fileFilter: function (req, file, cb) {
-        // Accept images, PDFs, and MP3s only
-        if (file.mimetype.includes('image') ||
-            file.mimetype.includes('pdf') ||
-            file.mimetype.includes('audio/mpeg')) {
-            cb(null, true);
-        } else {
-            cb(new Error('Only .pdf, .mp3, and image files are allowed!'), false);
-        }
-    }
-}).fields([{ name: 'coverImage', maxCount: 1 }, { name: 'pdfDocument', maxCount: 1 }, { name: 'mp3Recording', maxCount: 1 }]);
+const saveFile = async (file) => {
+    const newFile = new FileModel({
+        name: file.originalname,
+        data: file.buffer,
+        contentType: file.mimetype
+    });
+    const savedFile = await newFile.save();
+    return savedFile._id;
+};
 
 
 const ArrangementController = {
@@ -81,60 +52,42 @@ const ArrangementController = {
         }
     },
 
-    uploadMiddleware: (req, res, next) => {
-        upload(req, res, function (err) {
-            if (err instanceof multer.MulterError) {
-                // A Multer error occurred when uploading.
-                return res.status(500).json({ message: "Multer error uploading files", error: err.message });
-            } else if (err) {
-                // An unknown error occurred when uploading.
-                return res.status(500).json({ message: "Unknown error uploading files", error: err.message });
+
+    createArrangement: async (req, res, next) => {
+        const db = await getDb();
+        const collection = db.collection('arrangements');
+        let arrangement = new Arrangement({
+            title: req.body.title,
+            composer: req.body.composer,
+            description: req.body.description,
+            type: req.body.type,
+            length: req.body.length,
+            levelOfDifficulty: req.body.levelOfDifficulty,
+            price: req.body.price,
+            minimumCopies: req.body.minimumCopies,
+        })
+
+        if (req.file) {
+            try {
+                const fieldname = req.file.fieldname;
+                const fileId = await saveFile(req.file);
+                arrangement[fieldname] = fileId;
+            } catch (error) {
+                return res.status(500).json({ message: 'Error saving file', error: error.message });
             }
-            // Everything went fine.
-            next(); // Proceed to the next middleware or controller action
-        });
-    },
-
-
-    createArrangement: async (req, res) => {
-        try {
-            const db = await getDb();
-            const collection = db.collection('arrangements');
-
-            // Validate required fields
-            const requiredFields = ['title', 'composer', 'description', 'type', 'length', 'levelOfDifficulty', 'price', 'minimumCopies'];
-            for (const field of requiredFields) {
-                if (!req.body[field]) {
-                    return res.status(400).json({ message: `${field} is required.` });
-                }
-            }
-
-            const coverImagePath = req.files['coverImage'] ? req.files['coverImage'][0].path : '';
-            const pdfDocumentPath = req.files['pdfDocument'] ? req.files['pdfDocument'][0].path : '';
-            const mp3RecordingPath = req.files['mp3Recording'] ? req.files['mp3Recording'][0].path : '';
-
-
-            // Additional validations as in the old version
-            if (!['SSAA', 'SATB', 'TTBB'].includes(req.body.type)) {
-                return res.status(400).json({ message: 'Type must be SSAA, SATB, or TTBB.' });
-            }
-            const { levelOfDifficulty, price, minimumCopies } = req.body;
-            if (isNaN(levelOfDifficulty) || isNaN(price) || isNaN(minimumCopies)) {
-                return res.status(400).json({ message: 'level of difficulty, price, and minimum copies must be numeric values.' });
-            }
-
-            // Insert the arrangement into the database
-            const result = await collection.insertOne({
-                ...req.body,
-                pdfDocument: pdfDocumentPath,
-                mp3Recording: mp3RecordingPath,
-                coverImage: coverImagePath
-            });
-
-            res.status(201).json({ message: "Arrangement created successfully", id: result.insertedId });
-        } catch (err) {
-            res.status(500).json({ message: "Error creating arrangement", error: err.message });
         }
+
+        arrangement.save()
+            .then(response => {
+                res.json({
+                    message: 'Arrangement added successfully'
+                })
+            })
+            .catch(error => {
+                res.json({
+                    message: 'an error occured'
+                })
+            })
     },
 
 
@@ -171,3 +124,49 @@ const ArrangementController = {
 };
 
 module.exports = ArrangementController;
+
+
+
+
+
+
+
+/*try {
+            // Validate required fields
+            const requiredFields = ['title', 'composer', 'description', 'type', 'length', 'levelOfDifficulty', 'price', 'minimumCopies'];
+            for (const field of requiredFields) {
+                if (!req.body[field]) {
+                    return res.status(400).json({ message: `${field} is required.` });
+                }
+            }
+    
+            if (!['SSAA', 'SATB', 'TTBB'].includes(req.body.type)) {
+                return res.status(400).json({ message: 'Type must be SSAA, SATB, or TTBB.' });
+            }
+            const { levelOfDifficulty, price, minimumCopies } = req.body;
+            if (isNaN(levelOfDifficulty) || isNaN(price) || isNaN(minimumCopies)) {
+                return res.status(400).json({ message: 'level of difficulty, price, and minimum copies must be numeric values.' });
+            }
+    
+            // Save files using Multer
+            const coverImageId = await saveFile(req.file('coverImage')[0]); // Assuming only one file is uploaded
+            const pdfDocumentId = await saveFile(req.file('pdfDocument')[0]);
+            const mp3RecordingId = await saveFile(req.file('mp3Recording')[0]);
+    
+            // Create the arrangement using the Mongoose model
+            const arrangement = new Arrangement({
+                ...req.body,
+                pdfDocument: pdfDocumentId,
+                mp3Recording: mp3RecordingId,
+                coverImage: coverImageId
+            });
+    
+            // Save the arrangement to the database
+            await arrangement.save();
+    
+            res.status(201).json({ message: "Arrangement created successfully", id: arrangement._id });
+        } catch (err) {
+            res.status(500).json({ message: "Error creating arrangement", error: err.message });
+        }
+    },
+ */
