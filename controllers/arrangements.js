@@ -10,18 +10,14 @@ const ensureDirSync = (dirPath) => {
     }
 };
 
-const uploadsBasePath = path.join(__dirname, '../uploads');
+const uploadsBasePath = '/opt/render/project/src/uploads';
 const imagesPath = path.join(uploadsBasePath, 'images');
 const audiosPath = path.join(uploadsBasePath, 'audios');
 const pdfsPath = path.join(uploadsBasePath, 'pdfs');
 
-module.exports = function (app) {
-    ensureDirSync(imagesPath);
-    ensureDirSync(audiosPath);
-    ensureDirSync(pdfsPath);
-
-    app.use('/uploads', express.static(path.resolve(uploadsBasePath)));
-};
+ensureDirSync(imagesPath);
+ensureDirSync(audiosPath);
+ensureDirSync(pdfsPath);
 
 
 

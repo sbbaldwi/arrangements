@@ -1,12 +1,11 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const mongodb = require('./db/connect');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
-const MongoStore = require('connect-mongo'); // Import connect-mongo
+const MongoStore = require('connect-mongo');
 const cors = require('cors');
 
 const port = process.env.PORT || 8080;
@@ -15,7 +14,7 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
 const CONNECTION_STRING = process.env.CONNECTION_STRING;
-// Use session management middleware with connect-mongo
+
 app.use(session({
     secret: 'secret',
     resave: false,
@@ -32,7 +31,6 @@ app
     .use(cors())
     .use(express.json())
     .use('/', require('./routes/index'))
-    .use('/uploads', express.static('uploads'))
     .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
