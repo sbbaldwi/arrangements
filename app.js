@@ -13,17 +13,23 @@ const port = process.env.PORT || 8080;
 const app = express();
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
+
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app
     .use(cors())
-    .use(bodyParser.json())
+    .use(express.json())
     .use('/', require('./routes/index'))
     .use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://brichristiansenarrangements.onrender.com/auth/google/callback"
+    callbackURL: GOOGLE_CALLBACK_URL
 },
     async function (accessToken, refreshToken, profile, cb) {
         const db = getDb();
