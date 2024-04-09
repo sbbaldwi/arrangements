@@ -5,11 +5,18 @@
     "version": "1.0.0",
     "title": "Acapella Arrangements API"
   },
-  "host": "localhost:8080",
+  "host": "brichristiansenarrangements.onrender.com",
   "basePath": "/",
-  "schemes": ["http"],
-  "consumes": ["application/json", "multipart/form-data"],
-  "produces": ["application/json"],
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json",
+    "multipart/form-data"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "/arrangements": {
       "get": {
@@ -53,14 +60,23 @@
             "in": "formData",
             "required": true,
             "type": "string",
-            "enum": ["SSAA", "SATB", "TTBB"]
+            "enum": [
+              "SSAA",
+              "SATB",
+              "TTBB"
+            ]
           },
           {
             "name": "difficultyLevel",
             "in": "formData",
             "required": true,
             "type": "integer",
-            "enum": [1, 2, 3, 4]
+            "enum": [
+              1,
+              2,
+              3,
+              4
+            ]
           },
           {
             "name": "minimumPurchase",
@@ -179,15 +195,39 @@
   "definitions": {
     "Arrangement": {
       "type": "object",
-      "required": ["title", "composer", "ensembleType", "difficultyLevel", "minimumPurchase"],
+      "required": [
+        "title",
+        "composer",
+        "ensembleType",
+        "difficultyLevel",
+        "minimumPurchase"
+      ],
       "properties": {
-        "title": {"type": "string"},
-        "composer": {"type": "string"},
-        "ensembleType": {"type": "string"},
-        "difficultyLevel": {"type": "integer", "format": "int32"},
-        "minimumPurchase": {"type": "integer", "format": "int32"},
-        "sheetMusic": {"type": "string", "description": "Path to the uploaded sheet music file"},
-        "recording": {"type": "string", "description": "Path to the uploaded recording file"}
+        "title": {
+          "type": "string"
+        },
+        "composer": {
+          "type": "string"
+        },
+        "ensembleType": {
+          "type": "string"
+        },
+        "difficultyLevel": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "minimumPurchase": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sheetMusic": {
+          "type": "string",
+          "description": "Path to the uploaded sheet music file"
+        },
+        "recording": {
+          "type": "string",
+          "description": "Path to the uploaded recording file"
+        }
       }
     }
   }
