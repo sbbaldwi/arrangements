@@ -369,230 +369,230 @@
           }
         }
       }
-    }
-  },
-  "/cart/{userId}": {
-    "get": {
-      "summary": "Get all items in the user's cart",
-      "parameters": [
-        {
-          "name": "userId",
-          "in": "path",
-          "description": "ID of the user whose cart items to fetch",
-          "required": true,
-          "type": "string"
+    },
+    "/cart/{userId}": {
+      "get": {
+        "summary": "Get all items in the user's cart",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of the user whose cart items to fetch",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CartItem"
+              }
+            }
+          },
+          "404": {
+            "description": "Cart not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
         }
-      ],
-      "responses": {
-        "200": {
-          "description": "Successful operation",
-          "schema": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/CartItem"
+      }
+    },
+    "/cart": {
+      "post": {
+        "summary": "Add an item to the cart",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Item object to add to cart",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CartItemInput"
             }
           }
-        },
-        "404": {
-          "description": "Cart not found"
-        },
-        "500": {
-          "description": "Server error"
-        }
-      }
-    }
-  },
-  "/cart": {
-    "post": {
-      "summary": "Add an item to the cart",
-      "parameters": [
-        {
-          "name": "body",
-          "in": "body",
-          "description": "Item object to add to cart",
-          "required": true,
-          "schema": {
-            "$ref": "#/definitions/CartItemInput"
-          }
-        }
-      ],
-      "responses": {
-        "201": {
-          "description": "Item added to cart successfully"
-        },
-        "400": {
-          "description": "Bad request"
-        },
-        "404": {
-          "description": "Arrangement not found"
-        },
-        "500": {
-          "description": "Server error"
-        }
-      }
-    }
-  },
-  "/cart/{id}": {
-    "put": {
-      "summary": "Update the quantity of an item in the cart",
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "description": "ID of the item in the cart to update",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "body",
-          "in": "body",
-          "description": "Updated quantity",
-          "required": true,
-          "schema": {
-            "$ref": "#/definitions/CartItemUpdate"
-          }
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "Cart item updated successfully"
-        },
-        "400": {
-          "description": "Bad request"
-        },
-        "404": {
-          "description": "Cart item not found"
-        },
-        "500": {
-          "description": "Server error"
-        }
-      }
-    },
-    "delete": {
-      "summary": "Delete an item from the cart",
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "description": "ID of the item in the cart to delete",
-          "required": true,
-          "type": "string"
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "Cart item deleted successfully"
-        },
-        "404": {
-          "description": "Cart item not found"
-        },
-        "500": {
-          "description": "Server error"
-        }
-      }
-    },
-    "definitions": {
-      "Arrangement": {
-        "type": "object",
-        "required": [
-          "title",
-          "composer",
-          "ensembleType",
-          "difficultyLevel",
-          "minimumPurchase"
         ],
-        "properties": {
-          "title": {
-            "type": "string"
+        "responses": {
+          "201": {
+            "description": "Item added to cart successfully"
           },
-          "composer": {
-            "type": "string"
+          "400": {
+            "description": "Bad request"
           },
-          "ensembleType": {
-            "type": "string"
+          "404": {
+            "description": "Arrangement not found"
           },
-          "difficultyLevel": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "minimumPurchase": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sheetMusic": {
-            "type": "string",
-            "description": "Path to the uploaded sheet music file"
-          },
-          "recording": {
-            "type": "string",
-            "description": "Path to the uploaded recording file"
+          "500": {
+            "description": "Server error"
           }
         }
-      },
-      "Account": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "password": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "username",
-          "email",
-          "password"
-        ]
-      },
-      "CartItem": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "string"
-          },
-          "arrangementId": {
-            "type": "string"
-          },
-          "quantity": {
-            "type": "integer"
-          }
-        }
-      },
-      "CartItemInput": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "string"
-          },
-          "arrangementId": {
-            "type": "string"
-          },
-          "quantity": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "userId",
-          "arrangementId",
-          "quantity"
-        ]
-      },
-      "CartItemUpdate": {
-        "type": "object",
-        "properties": {
-          "quantity": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "quantity"
-        ]
       }
+    },
+    "/cart/{id}": {
+      "put": {
+        "summary": "Update the quantity of an item in the cart",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the item in the cart to update",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated quantity",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CartItemUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart item updated successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Cart item not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an item from the cart",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the item in the cart to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart item deleted successfully"
+          },
+          "404": {
+            "description": "Cart item not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Arrangement": {
+      "type": "object",
+      "required": [
+        "title",
+        "composer",
+        "ensembleType",
+        "difficultyLevel",
+        "minimumPurchase"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "composer": {
+          "type": "string"
+        },
+        "ensembleType": {
+          "type": "string"
+        },
+        "difficultyLevel": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "minimumPurchase": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sheetMusic": {
+          "type": "string",
+          "description": "Path to the uploaded sheet music file"
+        },
+        "recording": {
+          "type": "string",
+          "description": "Path to the uploaded recording file"
+        }
+      }
+    },
+    "Account": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "username",
+        "email",
+        "password"
+      ]
+    },
+    "CartItem": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "arrangementId": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer"
+        }
+      }
+    },
+    "CartItemInput": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "arrangementId": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "userId",
+        "arrangementId",
+        "quantity"
+      ]
+    },
+    "CartItemUpdate": {
+      "type": "object",
+      "properties": {
+        "quantity": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "quantity"
+      ]
     }
   }
 }
