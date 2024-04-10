@@ -193,7 +193,7 @@
           }
         }
       },
-      "/accounts": {
+      "/accounts/": {
         "post": {
           "summary": "Create a new account",
           "description": "Creates a new user account",
