@@ -1,0 +1,148 @@
+##accounts
+
+#get all accounts
+GET http://localhost:8080/accounts
+###
+
+#get all accounts
+GET https://brichristiansenarrangements.onrender.com/accounts
+###
+
+#get account by id
+GET http://localhost:8080/accounts/661627970a3274056522fc35
+###
+
+#get account by id
+GET https://brichristiansenarrangements.onrender.com/accounts/661627970a3274056522fc35
+###
+
+#CREATE ACCOUNT
+POST http://localhost:8080/accounts/register
+Content-Type: application/json
+
+{
+  "username": "johnDoe",
+  "email": "johnDoe@gmail.com",
+  "password": "123go!"
+}
+###
+
+#create account
+POST https://brichristiansenarrangements.onrender.com/accounts/register
+Content-Type: application/json
+
+{
+  "username": "janeDoe",
+  "email": "janeDoe@gmail.com",
+  "password": "123go!"
+}
+###
+
+#update account
+PUT http://localhost:8080/accounts/6616f01353e5a841ea89fcc2
+Content-Type: application/json
+
+{
+  "username": "janeSwift",
+  "email": "janeSwift@gmail.com",
+  "password": "123go!"
+}
+###
+
+#update account
+PUT https://brichristiansenarrangements.onrender.com/accounts/6616f01353e5a841ea89fcc2
+Content-Type: application/json
+
+{
+  "username": "janeSwift",
+  "email": "janeSwift@gmail.com",
+  "password": "123go!"
+}
+###
+
+#delete account
+DELETE https://brichristiansenarrangements.onrender.com/accounts/6616f01353e5a841ea89fcc2
+###
+
+#delete account
+DELETE http://localhost:8080/accounts/6616f01353e5a841ea89fcc2
+###
+
+#arrangements
+
+#get all arrangements
+GET http://localhost:8080/arrangements
+###
+
+#get all arrangements
+GET https://brichristiansenarrangements.onrender.com/arrangements
+###
+
+#get arrangement by id
+GET http://localhost:8080/arrangements/6615cbf715fb785c448e840e
+###
+
+#GET ARRANGEMENT BY ID
+GET https://brichristiansenarrangements.onrender.com/arrangements/6615cbf715fb785c448e840e
+###
+
+#upload arrangement
+POST http://localhost:8080/arrangements/upload
+Content-Type: multipart/form-data
+
+Key: title, Value: Your arrangement title
+Key: composer, Value: Composer name
+Key: ensembleType, Value: SSAA or SATB or TTBB
+Key: difficultyLevel, Value: 1 or 2 or 3 or 4
+Key: minimumPurchase, Value: Minimum purchase value
+Key: sheetMusic, Value: Select your sheet music file (PDF format)
+Key: recording, Value: Select your recording file (MP3 format)
+###
+
+#upload arrangement
+POST https://brichristiansenarrangements.onrender.com/arrangements/upload
+Content-Type: multipart/form-data
+
+Key: title, Value: Your arrangement title
+Key: composer, Value: Composer name
+Key: ensembleType, Value: SSAA or SATB or TTBB
+Key: difficultyLevel, Value: 1 or 2 or 3 or 4
+Key: minimumPurchase, Value: Minimum purchase value
+Key: sheetMusic, Value: Select your sheet music file (PDF format)
+Key: recording, Value: Select your recording file (MP3 format)
+###
+
+#update arrangement
+PUT https://brichristiansenarrangements.onrender.com/arrangements
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "composer": "Updated Composer",
+  "ensembleType": "SSAA",
+  "difficultyLevel": 3,
+  "minimumPurchase": 10
+}
+###
+
+#UPDATE ARRANGEMENT
+PUT http://localhost:8080/arrangements
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "composer": "Updated Composer",
+  "ensembleType": "SSAA",
+  "difficultyLevel": 3,
+  "minimumPurchase": 10
+}
+###
+
+#delete arrangement
+DELETE http://localhost:8080/arrangements/6615cbf715fb785c448e840e
+###
+
+#delete arrangement
+DELETE https://brichristiansenarrangements.onrender.com/arrangements/6615cbf715fb785c448e840e
+###
+
