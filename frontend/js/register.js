@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }).then(response => {
             if (response.ok) {
                 alert('Account created successfully. Please log in.');
-                window.location.href = './login.html'; // Redirect to login page
+                window.location.href = '/accounts/login'; // Redirect to login page
             } else {
                 console.error('Registration failed:', response.statusText);
                 alert('Registration failed: ' + response.statusText);
