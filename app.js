@@ -6,6 +6,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
 const path = require('path');
+const passport = require('passport');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -35,6 +36,13 @@ app.get('/accounts/login', (req, res) => {
 app.get('/accounts/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', 'register.html'));
 });
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    function (req, res) {
+        // Successful authentication, redirect to /api-docs.
+        res.redirect('/api-docs');
+    });
 
 // Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
