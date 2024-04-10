@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "API for managing acapella arrangements",
+    "description": "API for managing acapella arrangements and user accounts",
     "version": "1.0.0",
     "title": "Acapella Arrangements API"
   },
@@ -192,123 +192,123 @@
             "description": "Server error"
           }
         }
-      },
-      "/accounts/": {
-        "post": {
-          "summary": "Create a new account",
-          "description": "Creates a new user account",
-          "parameters": [
-            {
-              "name": "body",
-              "in": "body",
-              "description": "Account object that needs to be created",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/Account"
-              }
-            }
-          ],
-          "responses": {
-            "201": {
-              "description": "Account created"
-            },
-            "500": {
-              "description": "Server error"
+      }
+    },
+    "/accounts": {
+      "post": {
+        "summary": "Create a new account",
+        "description": "Creates a new user account",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Account object that needs to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Account"
             }
           }
+        ],
+        "responses": {
+          "201": {
+            "description": "Account created"
+          },
+          "500": {
+            "description": "Server error"
+          }
         }
-      },
-      "/accounts/authenticate": {
-        "post": {
-          "summary": "Authenticate a user",
-          "description": "Authenticates a user by email and password",
-          "parameters": [
-            {
-              "name": "body",
-              "in": "body",
-              "description": "Email and password of the user",
-              "required": true,
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
+      }
+    },
+    "/accounts/authenticate": {
+      "post": {
+        "summary": "Authenticate a user",
+        "description": "Authenticates a user by email and password",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Email and password of the user",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "password": {
+                  "type": "string"
                 }
               }
             }
-          ],
-          "responses": {
-            "200": {
-              "description": "User authenticated"
-            },
-            "401": {
-              "description": "Authentication failed"
-            },
-            "500": {
-              "description": "Server error"
-            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User authenticated"
+          },
+          "401": {
+            "description": "Authentication failed"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/accounts/{id}": {
+      "delete": {
+        "summary": "Delete an account by ID",
+        "description": "Deletes a single user account",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account deleted"
+          },
+          "404": {
+            "description": "Account not found"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       },
-      "/accounts/{id}": {
-        "delete": {
-          "summary": "Delete an account by ID",
-          "description": "Deletes a single user account",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Account deleted"
-            },
-            "404": {
-              "description": "Account not found"
-            },
-            "500": {
-              "description": "Server error"
+      "put": {
+        "summary": "Update an account by ID",
+        "description": "Updates an existing user account",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Account object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Account"
             }
           }
-        },
-        "put": {
-          "summary": "Update an account by ID",
-          "description": "Updates an existing user account",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "in": "body",
-              "name": "body",
-              "description": "Account object that needs to be updated",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/Account"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Account updated"
-            },
-            "404": {
-              "description": "Account not found"
-            },
-            "500": {
-              "description": "Server error"
-            }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account updated"
+          },
+          "404": {
+            "description": "Account not found"
+          },
+          "500": {
+            "description": "Server error"
           }
         }
       }
