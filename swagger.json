@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "API for managing acapella arrangements and user accounts",
+    "description": "API for managing acapella arrangements, user accounts, and card information",
     "version": "1.0.0",
     "title": "Acapella Arrangements API"
   },
@@ -11,8 +11,7 @@
     "https"
   ],
   "consumes": [
-    "application/json",
-    "multipart/form-data"
+    "application/json"
   ],
   "produces": [
     "application/json"
@@ -205,7 +204,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Account"
+                    "$ref": "#/definitions/Account"
                   }
                 }
               }
@@ -490,6 +489,49 @@
           }
         }
       }
+    },
+    "/cardInfo": {
+      "get": {
+        "summary": "Get all card information",
+        "description": "Returns all card information",
+        "responses": {
+          "200": {
+            "description": "A list of card information",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CardInfo"
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new card information",
+        "description": "Creates new card information",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Card information object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CardInfoInput"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Card information created successfully"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -592,6 +634,48 @@
       },
       "required": [
         "quantity"
+      ]
+    },
+    "CardInfo": {
+      "type": "object",
+      "properties": {
+        "cardNumber": {
+          "type": "string"
+        },
+        "expiryDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "cvv": {
+          "type": "string"
+        },
+        "cardHolderName": {
+          "type": "string"
+        }
+      }
+    },
+    "CardInfoInput": {
+      "type": "object",
+      "properties": {
+        "cardNumber": {
+          "type": "string"
+        },
+        "expiryDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "cvv": {
+          "type": "string"
+        },
+        "cardHolderName": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "cardNumber",
+        "expiryDate",
+        "cvv",
+        "cardHolderName"
       ]
     }
   }
