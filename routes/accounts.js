@@ -10,6 +10,8 @@ router.post('/', accountController.createAccount);
 // Authenticate a user
 router.post('/authenticate', accountController.authenticateUser);
 
+router.post('/register', accountController.createAccount);
+
 // Delete an account
 router.delete('/:id', accountController.deleteAccount);
 

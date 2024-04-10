@@ -217,29 +217,6 @@
             "description": "Server error"
           }
         }
-      },
-      "post": {
-        "summary": "Create a new account",
-        "description": "Creates a new user account",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Account object that needs to be created",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Account"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Account created"
-          },
-          "500": {
-            "description": "Server error"
-          }
-        }
       }
     },
     "/accounts/authenticate": {

@@ -7,6 +7,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -33,6 +34,13 @@ app
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Internal Server Error');
+});
+
+app.use(express.static(path.join(__dirname, 'frontend')));
+
+// Define a route to serve the login page
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'login.html'));
 });
 
 connectDb().then(() => {
