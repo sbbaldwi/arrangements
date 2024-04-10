@@ -71,7 +71,6 @@ exports.uploadArrangement = (req, res) => {
       sheetMusic: req.files.sheetMusic[0].path, // Corrected: Use req.files.sheetMusic instead of req.files.sheetMusic[0].path
       recording: req.files.recording[0].path // Corrected: Use req.files.recording instead of req.files.recording[0].path
     });
-
     // Save the arrangement to the database
     arrangement.save()
       .then(result => {
@@ -85,6 +84,7 @@ exports.uploadArrangement = (req, res) => {
       });
   });
 };
+
 
 
 // Update an arrangement
