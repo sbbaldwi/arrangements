@@ -411,11 +411,6 @@
     },
     "Account": {
       "type": "object",
-      "required": [
-        "username",
-        "email",
-        "password"
-      ],
       "properties": {
         "username": {
           "type": "string"
@@ -427,7 +422,12 @@
         "password": {
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "username",
+        "email",
+        "password"
+      ]
     }
   }
 }
