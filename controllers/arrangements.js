@@ -108,18 +108,18 @@ exports.updateArrangement = (req, res) => {
 
 exports.deleteArrangement = (req, res) => {
   const id = req.params.id;
-  Arrangement.findById(id)
+  Arrangement.findByIdAndDelete(id)
     .then(arrangement => {
       if (arrangement) {
-        console.log("Arrangement found:", arrangement);
-        // Proceed with deletion
+        console.log("Arrangement found and deleted:", arrangement);
+        res.status(200).json({ message: 'Arrangement deleted successfully' });
       } else {
         console.log("Arrangement not found");
-        // Return 404 response indicating arrangement not found
+        res.status(404).json({ message: 'Arrangement not found' });
       }
     })
     .catch(err => {
-      console.error("Error finding arrangement:", err);
-      // Return 500 response for server error
+      console.error("Error deleting arrangement:", err);
+      res.status(500).json({ message: 'Failed to delete arrangement', error: err.message });
     });
 };
