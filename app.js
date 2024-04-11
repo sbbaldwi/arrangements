@@ -1,5 +1,5 @@
 const express = require('express');
-const connectDb = require('./db/connect');
+const connectDb = require('./db/connect'); 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 const session = require('express-session');
@@ -12,22 +12,19 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const app = express();
 const port = process.env.PORT || 8080;
 
-//google oauth
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,     // Your Google Client ID
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET, // Your Google Client Secret
-    callbackURL: "/auth/google/callback"       // URL to which Google will redirect after authentication
+    clientID: process.env.GOOGLE_CLIENT_ID,     
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET, 
+    callbackURL: "/auth/google/callback"       
 },
     function (accessToken, refreshToken, profile, cb) {
-        // Here, you would typically find or create a user in your database.
-        // The following is just a placeholder:
         cb(null, profile);
     }
 ));
 
-// Setup session management
+
 app.use(session({
-    secret: 'secret',  // This should ideally be an environment variable
+    secret: process.env.SESSION_SECRET,  
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
@@ -37,13 +34,9 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Middleware to parse JSON and urlencoded data and set CORS
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Serve static files - should ideally be placed after dynamic route declarations
 app.use(express.static(path.join(__dirname, 'frontend')));
 
 app.get('/accounts/login', (req, res) => {
@@ -86,3 +79,5 @@ connectDb().then(() => {
 }).catch(err => {
     console.error('Database connection failed', err);
 });
+
+module.exports = app; // Export the 'app' variable
