@@ -146,3 +146,36 @@ DELETE http://localhost:8080/arrangements/6615cbf715fb785c448e840e
 DELETE https://brichristiansenarrangements.onrender.com/arrangements/6615cbf715fb785c448e840e
 ###
 
+#get cart
+GET http://localhost:8080/cart/661627970a3274056522fc35
+###
+
+#get cart
+GET https://brichristiansenarrangements.onrender.com/cart/661627970a3274056522fc35
+###
+
+#add to cart
+POST http://localhost:8080/cart
+Content-Type: application/json
+
+{
+  "userId": "{userId}",
+  "arrangementId": "{arrangementId}",
+  "quantity": 1
+}
+###
+
+#update cart
+PUT https://brichristiansenarrangements.onrender.com/cart/6615cbf715fb785c448e840e
+###
+
+#update cart
+PUT http://localhost:8080/cart/6615cbf715fb785c448e840e
+###
+#
+DELETE https://brichristiansenarrangements.onrender.com/cart/6615cbf715fb785c448e840e
+###
+
+#
+DELETE http://localhost:8080/cart/6615cbf715fb785c448e840e
+###
