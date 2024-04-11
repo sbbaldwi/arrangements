@@ -42,35 +42,27 @@ app.use(express.static(path.join(__dirname, 'frontend')));
 app.get('/accounts/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', 'login.html'));
 });
-
 app.get('/accounts/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', 'register.html'));
 });
-
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
 app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     function (req, res) {
         // Successful authentication, redirect to /api-docs.
         res.redirect('/api-docs');
     });
-
 // Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 // Serve API routes
 app.use('/', require('./routes/index'));
-
 // Serve uploads as static files
 app.use('/uploads', express.static('uploads'));
-
 // Custom error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Internal Server Error');
 });
-
 // Connection to MongoDB and server start
 connectDb().then(() => {
     app.listen(port, () => {
@@ -79,5 +71,3 @@ connectDb().then(() => {
 }).catch(err => {
     console.error('Database connection failed', err);
 });
-
-module.exports = app; // Export the 'app' variable

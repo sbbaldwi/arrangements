@@ -26,6 +26,7 @@ exports.getAllAccounts = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch accounts', error: error.message });
     }
 };
+
 // Get account by ID
 exports.getAccountById = [
     param('id').isMongoId().withMessage('Invalid MongoDB ID'),
